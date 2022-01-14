@@ -1,0 +1,22 @@
+name: Build Docker image
+
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 12 */14 * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Publish to Github Docker registry
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: robinj1995/nocto-plugin-jeroen/jeroen
+          registry: ghcr.io
+          username: RobinJ1995
+          password: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          snapshot: true
