@@ -29,9 +29,24 @@ module.exports = loadPlugin = (resources, service) => {
             console.log(`Received in-line query.`, message);
 
             if (!message?.query) {
+                const options = Array(12).fill(true)
+                    .map(() => {
+                        const id = uuid();
+                        const url = maxWidth => `https://turbokut.nl/?seed=${id}&max_width=${maxWidth}`;
+
+                        return {
+                            type: 'photo',
+                            id,
+                            title: id,
+                            photo_url: url(512),
+                            thumb_url: url(200)
+                        };
+                    });
+                
+                console.log('Responding to empty in-line query...', options);
                 api.answerInlineQuery({
                     inline_query_id: message.id,
-                    results: []
+                    results: options
                 });
                 return;
             }
